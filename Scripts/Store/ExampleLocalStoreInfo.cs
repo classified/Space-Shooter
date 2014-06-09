@@ -35,7 +35,6 @@ namespace Soomla.Example
             VirtualCurrencies = StoreInfo.GetVirtualCurrencies ();
             VirtualGoods = StoreInfo.GetVirtualGoods ();
             VirtualCurrencyPacks = StoreInfo.GetVirtualCurrencyPacks (); 
-           
             UpdateBalances ();
         }
     }

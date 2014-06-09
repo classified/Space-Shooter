@@ -4,8 +4,6 @@ using UnityEngine;
 using Facebook;
 using System.Collections;
 using Soomla;
-using Soomla.Example;
-using System.Text;
 
 public class MainMenu : BaseMenuState
 {
@@ -14,23 +12,30 @@ public class MainMenu : BaseMenuState
 	//the background texture
 	public GameObject AlertBoxPrefeb;
 	public Texture backTexture;
+	
 	//the options menu gameObject
 	public GameObject optionsGO;
+	
 	//the credit menu gameObject
 	public GameObject creditsGO;
+	
 	//the level select gameObject
 	public GameObject levelSelectGO;
+
 	//the Difficulty GameObject
 	public GameObject difSelectGO;
 	public Texture FacebookLogin;
 	// public GameObject StoreGUI;
 	//do  you want to use the quit button.
 	public bool useQuitButton = false;
+	
 	//do  you want to use the highscore button.
 	public bool useHighscoreButton = false;
+	
 	public Texture LeaderBoard;
 	public string menuMenuSTR = "Main Menu";
 	public string startButtonSTR = "Start";
+	
 	public string optionsSTR = "Options";
 	public string creditsSTR = "Credits";
 	public string quitSTR = "Quit";
@@ -39,11 +44,13 @@ public class MainMenu : BaseMenuState
 	int showHighScore;
 	public GUIStyle noGUIStyle;
 	bool isEnabled;
+    
 	bool isLogged;
 	Texture pic;
 	string userId;
 	public Texture StoreLogin;
 	//GUI scaling Elements
+
 	//private float orignalWidth;
 	//private float orignalHeight;
 	private Vector3 scale;
@@ -78,17 +85,14 @@ public class MainMenu : BaseMenuState
 		Screen.lockCursor = false;
 		Screen.showCursor = true;
 		Time.timeScale = 1;
-		//StoreController.Initialize ();
-		HighwayController.Initialize ();
-		StorefrontController.Initialize ();
-		StoreController.Initialize (new SpaceStoreAssets ());
+       
 		m_on = true;
-		//Debug.Log (Application.persistentDataPath + "/PlayerPrefs.txt");
+		Debug.Log (Application.persistentDataPath + "/PlayerPrefs.txt");
 		//showHighScore = PreviewLabs.PlayerPrefs.GetInt("Highscore");
 		//orignalWidth = Screen.width;
 		//orignalHeight = Screen.height;
 		// Saving Score if user goes into main menu while playing game.
-		//Debug.Log ("check from main menu to asking to save score " + EventTalk.EventTrigger.askToSaveScore);
+		Debug.Log ("check from main menu to asking to save score " + EventTalk.EventTrigger.askToSaveScore);
 		if (EventTalk.EventTrigger.askToSaveScore == true) {
 			//  publicService.SubmitScoreToLeaderBoards ();
 			LaserMove.Save ();
@@ -97,6 +101,7 @@ public class MainMenu : BaseMenuState
 
 	}
 
+  
 	void LoginCallBack (FBResult result)
 	{
         
@@ -167,8 +172,8 @@ public class MainMenu : BaseMenuState
 		scale.z = 1f;
 		var svMat = GUI.matrix;
 
-		//   Debug.Log (scale.x.ToString ());
-		//   Debug.Log (scale.y.ToString ());
+		Debug.Log (scale.x.ToString ());
+		Debug.Log (scale.y.ToString ());
 		GUI.matrix = Matrix4x4.TRS (Vector3.zero, Quaternion.identity, scale);
 
 		//draw out background texture
@@ -181,14 +186,13 @@ public class MainMenu : BaseMenuState
 		GUI.Box (GUIHelper.screenRect (offsetX, offsetY, Screen.width, Screen.height), menuMenuSTR);
 
 		if (GUI.Button (new Rect (0, Screen.height / 2, 100, 50), StoreLogin, noGUIStyle)) {
-			GUI.enabled = false;
-			StorefrontController.OpenStore ();
+			Application.LoadLevel ("Store");
 
 
 		}
 		//GUI.Label(GUIHelper.screenRect (offsetX+.385f,offsetY+.775f,.55f,.1f),"HighScore : " + showHighScore.ToString(),introTextGS);
 		if (GUI.Button (new Rect (60, 0, FacebookLogin.width / 2, 50), FacebookLogin, noGUIStyle)) {
-			FB.Login ("email,publish_actions", LoginCallBack);
+			FB.Login ("email,publish_actions,user_games_activity,friends_games_activity", LoginCallBack);
 			//FB.API ("/me/picture", HttpMethod.GET, GetProfilePicAnswer);
 		}
 		if (GUI.Button (new Rect (0, 0, LeaderBoard.width, 50), LeaderBoard, noGUIStyle)) {
@@ -241,7 +245,7 @@ public class MainMenu : BaseMenuState
 	{
 		Screen.sleepTimeout = (int)SleepTimeout.NeverSleep;
              
-		Debug.Log ("User id : " + userId);
+       
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 
 			FB.Logout ();
@@ -250,4 +254,7 @@ public class MainMenu : BaseMenuState
 
 
 	}
+
+	
+
 }

@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Soomla;
-
-public class StartWindow : MonoBehaviour
+namespace Soomla.Example
 {
-    void Start ()
+    public class StartWindow : MonoBehaviour
     {
-        OpenStore ();
-    }
 
-    void OpenStore ()
-    {
-        StorefrontController.OpenStore ();
+        // Use this for initialization
+        void Start ()
+        {
+            ExampleWindow.OpenWindow ();
+        }
+	
+
     }
 }

@@ -48,7 +48,7 @@ namespace Soomla.Example
         {
             handler = new ExampleEventHandler ();
             
-            StoreController.Initialize (new MuffinRushAssets ());
+            StoreController.Initialize (new SpaceStoreAssets ());
             
             // Initialization of 'ExampleLocalStoreInfo' and some example usages in ExampleEventHandler.onStoreControllerInitialized
         }
@@ -89,9 +89,12 @@ namespace Soomla.Example
                 }
             }
         }
+
+
         
         void OnGUI ()
         {
+                    
             if (!isVisible) {
                 return;
             }
@@ -116,22 +119,22 @@ namespace Soomla.Example
         void welcomeScreen ()
         {
             //drawing background, just using a white pixel here
-            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture2D)Resources.Load ("SoomlaStore/images/img_direct"));
+            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture)Resources.Load ("starFleet/theme/img/BG_BG"));
             //changing the font and alignment the label, and making a backup so we can put it back.
             Font backupFont = GUI.skin.label.font;
             TextAnchor backupAlignment = GUI.skin.label.alignment;
-            GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/GoodDog" + fontSuffix);
+            GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/Commando" + fontSuffix);
             GUI.skin.label.alignment = TextAnchor.MiddleCenter;
             //writing the text.
-            GUI.Label (new Rect (Screen.width / 8, Screen.height / 8f, Screen.width * 6f / 8f, Screen.height * 0.3f), "Soomla Store\nExample");
+            GUI.Label (new Rect (Screen.width / 8, Screen.height / 8f, Screen.width * 6f / 8f, Screen.height * 0.3f), "Space Shooter Store");
             //select the small font
-            GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/GoodDog_small" + fontSuffix);
-            GUI.Label (new Rect (Screen.width / 8, Screen.height * 7f / 8f, Screen.width * 6f / 8f, Screen.height / 8f), "Press the SOOMLA-bot to open store");
+            GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/Commando" + fontSuffix);
+            GUI.Label (new Rect (Screen.width / 8, Screen.height * 7f / 8f, Screen.width * 6f / 8f, Screen.height / 8f), "Press The Store to Open.");
             //set font back to original
             GUI.skin.label.font = backupFont;
-            GUI.Label (new Rect (Screen.width * 0.25f, Screen.height / 2 - 50, Screen.width * 0.5f, 100), "[ Your game here ]");
+            GUI.Label (new Rect (Screen.width * 0.25f, Screen.height / 2 - 50, Screen.width * 0.5f, 100), "Space Shooter");
             //drawing button and testing if it has been clicked
-            if (GUI.Button (new Rect (Screen.width * 2 / 6, Screen.height * 5f / 8f, Screen.width * 2 / 6, Screen.width * 2 / 6), (Texture2D)Resources.Load ("SoomlaStore/images/soomla_logo_new"))) {
+            if (GUI.Button (new Rect (Screen.width * 2 / 6, Screen.height * 5f / 8f, Screen.width * 2 / 6, Screen.width * 2 / 6), (Texture)Resources.Load ("starFleet/theme/img/carticon"))) {
                 guiState = GUIState.GOODS;
                 #if UNITY_ANDROID && !UNITY_EDITOR
                 StoreController.StartIabServiceInBg();
@@ -143,34 +146,35 @@ namespace Soomla.Example
         
         void goodsScreen ()
         {
+
             //white background
-            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture2D)Resources.Load ("SoomlaStore/images/white_pixel"));
+            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture)Resources.Load ("starFleet/theme/img/BG_BG"));
             Color backupColor = GUI.color;
             TextAnchor backupAlignment = GUI.skin.label.alignment;
             Font backupFont = GUI.skin.label.font;
-            
-            GUI.color = Color.red;
+
+            GUI.DrawTexture (new Rect (10, 20, Screen.width - 20, Screen.height - 100), (Texture)Resources.Load ("starFleet/theme/img/ContentBackground1"));
+            GUI.color = Color.white;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            GUI.Label (new Rect (10, 10, Screen.width - 10, Screen.height - 10), "SOOMLA Example Store");
-            GUI.color = Color.black;
+            GUI.Label (new Rect (30, 30, Screen.width - 10, Screen.height - 10), "Space Shooter Store");
+            GUI.color = Color.white;
             GUI.skin.label.alignment = TextAnchor.UpperRight;
-            GUI.Label (new Rect (10, 10, Screen.width - 40, Screen.height), "" + ExampleLocalStoreInfo.CurrencyBalance);
+            GUI.Label (new Rect (-10, 30, Screen.width - 40, Screen.height), "" + ExampleLocalStoreInfo.CurrencyBalance);
             GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-            GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Title" + fontSuffix);
-            GUI.Label (new Rect (0, Screen.height / 8f, Screen.width, Screen.height / 8f), "Virtual Goods");
+            GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/CommandoCommando" + fontSuffix);
+            GUI.Label (new Rect (0, Screen.height / 8f, Screen.width, Screen.height / 8f), "Buy Energy");
             
-            GUI.color = backupColor;
-            GUI.DrawTexture (new Rect (Screen.width - 30, 10, 30, 30), (Texture2D)Resources.Load ("SoomlaStore/images/Muffins"));
+            GUI.color = Color.white;
+            GUI.DrawTexture (new Rect (Screen.width - 50, 30, 30, 30), (Texture)Resources.Load ("starFleet/theme/img/coin"));
             float productSize = Screen.width * 0.30f;
-            float totalHeight = 4f;//ExampleLocalStoreInfo.VirtualGoods.Count * productSize;
-            Debug.Log (totalHeight);
+            float totalHeight = ExampleLocalStoreInfo.VirtualGoods.Count * productSize;
             //Here we start a scrollView, the first rectangle is the position of the scrollView on the screen,
             //the second rectangle is the size of the panel inside the scrollView.
             //All rectangles after this point are relative to the position of the scrollView.
             goodsScrollPosition = GUI.BeginScrollView (new Rect (0, Screen.height * 2f / 8f, Screen.width, Screen.height * 5f / 8f), goodsScrollPosition, new Rect (0, 0, Screen.width, totalHeight));
             float y = 0;
             foreach (VirtualGood vg in ExampleLocalStoreInfo.VirtualGoods) {
-                GUI.color = backupColor;
+                GUI.color = Color.white;
                 if (GUI.Button (new Rect (0, y, Screen.width, productSize), "") && !isDragging) {
                     Debug.Log ("SOOMLA/UNITY wants to buy: " + vg.Name);
                     try {
@@ -179,26 +183,26 @@ namespace Soomla.Example
                         Debug.Log ("SOOMLA/UNITY " + e.Message);
                     }
                 }
-                GUI.DrawTexture (new Rect (0, y, Screen.width, productSize), (Texture2D)Resources.Load ("SoomlaStore/images/white_pixel"));
+                GUI.DrawTexture (new Rect (0, y, Screen.width, productSize), (Texture)Resources.Load ("starFleet/theme/img/BG_Product"));
                 //We draw a button so we can detect a touch and then draw an image on top of it.
                 //TODO
                 //Resources.Load(path) The path is the relative path starting from the Resources folder.
                 //Make sure the images used for UI, have the textureType GUI. You can change this in the Unity editor.
-                GUI.color = backupColor;
+                GUI.color = Color.white;
                 GUI.DrawTexture (new Rect (0 + productSize / 8f, y + productSize / 8f, productSize * 6f / 8f, productSize * 6f / 8f), (Texture2D)Resources.Load ("SoomlaStore/images/" + vg.Name));
-                GUI.color = Color.black;
-                GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Name" + fontSuffix);
+                GUI.color = Color.white;
+                GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/CommandoCommando" + fontSuffix);
                 GUI.skin.label.alignment = TextAnchor.UpperLeft;
                 GUI.Label (new Rect (productSize, y, Screen.width, productSize / 3f), vg.Name);
-                GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Description" + fontSuffix);
+                GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/CommandoCommando" + fontSuffix);
                 GUI.Label (new Rect (productSize + 10f, y + productSize / 3f, Screen.width - productSize - 15f, productSize / 3f), vg.Description);
                 GUI.Label (new Rect (Screen.width / 2f, y + productSize * 2 / 3f, Screen.width, productSize / 3f), "price:" + ((PurchaseWithVirtualItem)vg.PurchaseType).Amount);
                 GUI.Label (new Rect (Screen.width * 3 / 4f, y + productSize * 2 / 3f, Screen.width, productSize / 3f), "Balance:" + ExampleLocalStoreInfo.GoodsBalances [vg.ItemId]);
                 GUI.skin.label.alignment = TextAnchor.UpperRight;
-                GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Buy" + fontSuffix);
+                GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/CommandoCommando" + fontSuffix);
                 GUI.Label (new Rect (0, y, Screen.width - 10, productSize), "Click to buy");
-                GUI.color = Color.grey;
-                GUI.DrawTexture (new Rect (0, y + productSize - 1, Screen.width, 1), (Texture2D)Resources.Load ("SoomlaStore/images/white_pixel"));
+                GUI.color = Color.white;
+                GUI.DrawTexture (new Rect (0, y + productSize - 1, Screen.width, 1), (Texture)Resources.Load ("starFleet/theme/img/ContentBackground1"));
                 y += productSize;
             }
             GUI.EndScrollView ();
@@ -217,30 +221,30 @@ namespace Soomla.Example
                 StoreController.StopIabServiceInBg();
                 #endif
             }
-            GUI.DrawTexture (new Rect (Screen.width * 2f / 7f - width / 2f, Screen.height * 7f / 8f + borderSize, width, buttonHeight), (Texture2D)Resources.Load ("SoomlaStore/images/back"));
+            GUI.DrawTexture (new Rect (Screen.width * 2f / 7f - width / 2f, Screen.height * 7f / 8f + borderSize, width, buttonHeight), (Texture)Resources.Load ("starFleet/theme/img/BACK"));
             width = buttonHeight * 227 / 94;
             if (GUI.Button (new Rect (Screen.width * 5f / 7f - width / 2f, Screen.height * 7f / 8f + borderSize, width, buttonHeight), "back")) {
                 guiState = GUIState.PRODUCTS;
             }
             GUI.DrawTexture (new Rect (Screen.width * 5f / 7f - width / 2f, Screen.height * 7f / 8f + borderSize, width, buttonHeight), (Texture2D)Resources.Load ("SoomlaStore/images/GetMore"));
         }
-        
+
         void currencyScreen ()
         {
             //white background
-            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture2D)Resources.Load ("SoomlaStore/images/white_pixel"));
+            GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), (Texture)Resources.Load ("starFleet/theme/img/BG_BG"));
             Color backupColor = GUI.color;
             TextAnchor backupAlignment = GUI.skin.label.alignment;
             Font backupFont = GUI.skin.label.font;
             
             GUI.color = Color.red;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            GUI.Label (new Rect (10, 10, Screen.width - 10, Screen.height - 10), "SOOMLA Example Store");
-            GUI.color = Color.black;
+            GUI.Label (new Rect (10, 10, Screen.width - 10, Screen.height - 10), "Space Shooter Store");
+            GUI.color = Color.white;
             GUI.skin.label.alignment = TextAnchor.UpperRight;
             GUI.Label (new Rect (10, 10, Screen.width - 40, Screen.height), "" + ExampleLocalStoreInfo.CurrencyBalance);
             GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-            GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Title" + fontSuffix);
+            GUI.skin.label.font = (Font)Resources.Load ("starFleet/theme/fonts/CommandoCommando" + fontSuffix);
             GUI.Label (new Rect (0, Screen.height / 8f, Screen.width, Screen.height / 8f), "Virtual Currency Packs");
             
             GUI.color = backupColor;
@@ -253,7 +257,7 @@ namespace Soomla.Example
             productScrollPosition = GUI.BeginScrollView (new Rect (0, Screen.height * 2f / 8f, Screen.width, Screen.height * 5f / 8f), productScrollPosition, new Rect (0, 0, Screen.width, totalHeight));
             float y = 0;
             foreach (VirtualCurrencyPack cp in ExampleLocalStoreInfo.VirtualCurrencyPacks) {
-                GUI.color = backupColor;
+                GUI.color = Color.white;
                 //We draw a button so we can detect a touch and then draw an image on top of it.
                 if (GUI.Button (new Rect (0, y, Screen.width, productSize), "") && !isDragging) {
                     Debug.Log ("SOOMLA/UNITY Wants to buy: " + cp.Name);
@@ -267,7 +271,7 @@ namespace Soomla.Example
                 //Resources.Load(path) The path is the relative path starting from the Resources folder.
                 //Make sure the images used for UI, have the textureType GUI. You can change this in the Unity editor.
                 GUI.DrawTexture (new Rect (0 + productSize / 8f, y + productSize / 8f, productSize * 6f / 8f, productSize * 6f / 8f), (Texture2D)Resources.Load ("SoomlaStore/images/" + cp.Name));
-                GUI.color = Color.black;
+                GUI.color = Color.white;
                 GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Name" + fontSuffix);
                 GUI.skin.label.alignment = TextAnchor.UpperLeft;
                 GUI.Label (new Rect (productSize, y, Screen.width, productSize / 3f), cp.Name);
@@ -277,14 +281,14 @@ namespace Soomla.Example
                 GUI.skin.label.alignment = TextAnchor.UpperRight;
                 GUI.skin.label.font = (Font)Resources.Load ("SoomlaStore/Buy" + fontSuffix);
                 GUI.Label (new Rect (0, y, Screen.width - 10, productSize), "Click to buy");
-                GUI.color = Color.grey;
+                GUI.color = Color.white;
                 GUI.DrawTexture (new Rect (0, y + productSize - 1, Screen.width, 1), (Texture2D)Resources.Load ("SoomlaStore/images/white_pixel"));
                 y += productSize;
             }
             GUI.EndScrollView ();
             //We have just ended the scroll view this means that all the positions are relative top-left corner again.
             GUI.skin.label.alignment = backupAlignment;
-            GUI.color = backupColor;
+            GUI.color = Color.white;
             GUI.skin.label.font = backupFont;
             
             float height = Screen.height / 8f;
@@ -299,4 +303,3 @@ namespace Soomla.Example
         
     }
 }
-
